@@ -50,11 +50,11 @@ const DebugView: React.FC<DebugViewProps> = ({ pages, transformations }) => {
   }, []);
 
   const nextTransformation = useCallback(() => {
-    setCurrentTransformation(prev => prev + 1);
-  }, []);
+    setCurrentTransformation(prev => Math.min(transformations.length - 1, prev + 1));
+  }, [transformations.length]);
 
   const prevTransformation = useCallback(() => {
-    setCurrentTransformation(prev => prev - 1);
+    setCurrentTransformation(prev => Math.max(0, prev - 1));
   }, []);
 
   const toggleModifications = useCallback(() => {
@@ -63,6 +63,14 @@ const DebugView: React.FC<DebugViewProps> = ({ pages, transformations }) => {
 
   const toggleStatistics = useCallback(() => {
     setShowStatistics(prev => !prev);
+  }, []);
+
+  const onChangeModifications = useCallback((e: any) => {
+    setModificationsOnly(!!e?.target?.checked);
+  }, []);
+
+  const onChangeStatistics = useCallback((e: any) => {
+    setShowStatistics(!!e?.target?.checked);
   }, []);
 
   // 模拟原来的转换逻辑
@@ -112,7 +120,7 @@ const DebugView: React.FC<DebugViewProps> = ({ pages, transformations }) => {
     <Dropdown.Item 
       key={index} 
       eventKey={index}
-      onSelect={() => selectTransformation(index)}
+      onClick={() => selectTransformation(index)}
     >
       {transformation.name}
     </Dropdown.Item>
@@ -190,6 +198,7 @@ const DebugView: React.FC<DebugViewProps> = ({ pages, transformations }) => {
                   <Button 
                     className={currentTransformation > 0 ? 'btn-round' : 'btn-round disabled'} 
                     onClick={prevTransformation}
+                    disabled={currentTransformation <= 0}
                   >
                     ← Previous
                   </Button>
@@ -199,6 +208,7 @@ const DebugView: React.FC<DebugViewProps> = ({ pages, transformations }) => {
                   <Button 
                     className={currentTransformation < transformations.length - 1 ? 'btn-round' : 'btn-round disabled'} 
                     onClick={nextTransformation}
+                    disabled={currentTransformation >= transformations.length - 1}
                   >
                     Next →
                   </Button>
@@ -215,15 +225,21 @@ const DebugView: React.FC<DebugViewProps> = ({ pages, transformations }) => {
                 </ButtonGroup>
                 <ButtonGroup>
                   {showModificationCheckbox && (
-                    <Form.Check type="checkbox" onClick={toggleModifications}>
-                      Show only modifications
-                    </Form.Check>
+                    <Form.Check 
+                      type="checkbox" 
+                      label="Show only modifications" 
+                      checked={modificationsOnly}
+                      onChange={onChangeModifications}
+                    />
                   )}
                 </ButtonGroup>
                 <ButtonGroup>
-                  <Form.Check type="checkbox" onClick={toggleStatistics}>
-                    Show Statistics
-                  </Form.Check>
+                  <Form.Check 
+                    type="checkbox" 
+                    label="Show Statistics" 
+                    checked={showStatistics}
+                    onChange={onChangeStatistics}
+                  />
                 </ButtonGroup>
               </ButtonToolbar>
             </td>

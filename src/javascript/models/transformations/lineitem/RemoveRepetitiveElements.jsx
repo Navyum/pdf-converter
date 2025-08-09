@@ -1,7 +1,7 @@
 import ToLineItemTransformation from '../ToLineItemTransformation.jsx';
 import { REMOVED_ANNOTATION } from '../../Annotation.jsx';
 
-import { isDigit } from '../../../stringFunctions.jsx'
+import { isDigit } from '../../../stringFunctions'
 import ParseResult from '../../ParseResult.jsx';
 
 

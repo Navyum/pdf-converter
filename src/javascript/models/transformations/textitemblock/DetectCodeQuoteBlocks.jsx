@@ -1,7 +1,7 @@
 import ToLineItemBlockTransformation from '../ToLineItemBlockTransformation.jsx';
 import { DETECTED_ANNOTATION } from '../../Annotation.jsx';
 import BlockType from '../../markdown/BlockType.jsx';
-import { minXFromBlocks } from '../../../pageItemFunctions.jsx';
+import { minXFromBlocks } from '../../../pageItemFunctions';
 import ParseResult from '../../ParseResult.jsx';
 
 //Detect items which are code/quote blocks

@@ -6,6 +6,7 @@ declare module 'react-bootstrap' {
     className?: string;
     children?: React.ReactNode;
     bsSize?: string;
+    disabled?: boolean;
   }
 
   export interface ButtonGroupProps {
@@ -129,7 +130,7 @@ declare module 'react-bootstrap' {
   export const Dropdown: React.ComponentType<DropdownProps> & {
     Menu: React.ComponentType<{ children?: React.ReactNode }>;
     Toggle: React.ComponentType<{ children?: React.ReactNode; id?: string; variant?: string }>;
-    Item: React.ComponentType<{ eventKey?: any; onSelect?: () => void; children?: React.ReactNode }>;
+    Item: React.ComponentType<{ eventKey?: any; onSelect?: () => void; onClick?: () => void; children?: React.ReactNode }>;
   };
   export const Popover: React.ComponentType<PopoverProps>;
   export const OverlayTrigger: React.ComponentType<OverlayTriggerProps>;
