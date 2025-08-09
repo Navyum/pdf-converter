@@ -5,13 +5,15 @@ import { View, AppStateType } from '../../models/AppState';
 
 // 模拟 AppState
 const createMockAppState = (overrides = {}): AppStateType & {
-  fileBuffer?: Uint8Array;
+  fileBuffer?: any;
   pages?: any[];
   transformations?: any[];
   metadata?: { title?: string };
 } => ({
   mainView: View.UPLOAD,
-  fileBuffer: undefined,
+  fileBuffer: null as any,
+  pdfPages: [],
+  finalText: '',
   pages: [],
   transformations: [],
   metadata: {},
@@ -26,8 +28,8 @@ describe('App Component', () => {
   it('renders without crashing', () => {
     const mockAppState = createMockAppState();
     const { getByText } = render(<App appState={mockAppState} />);
-    
-    expect(getByText('PDF To Markdown Converter')).toBeInTheDocument();
+    // 顶部标题包含图标，使用正则匹配子串
+    expect(getByText(/PDF To Markdown Converter/)).toBeInTheDocument();
   });
 
   it('renders UploadView when mainView is UPLOAD', () => {
@@ -41,7 +43,7 @@ describe('App Component', () => {
     const mockAppState = createMockAppState({ 
       mainView: View.RESULT,
       pages: [{ pageNumber: 1 }],
-      transformations: [{ name: 'Test Transformation' }]
+      transformations: [{ name: 'Test Transformation', transform: (r: any) => r }]
     });
     const { getByText } = render(<App appState={mockAppState} />);
     
@@ -53,12 +55,12 @@ describe('App Component', () => {
     const mockAppState = createMockAppState({ 
       mainView: View.DEBUG,
       pages: [{ pageNumber: 1 }],
-      transformations: [{ name: 'Test Transformation' }]
+      transformations: [{ name: 'Test Transformation', transform: (r: any) => r }]
     });
     const { getByText } = render(<App appState={mockAppState} />);
     
     expect(getByText('Pages')).toBeInTheDocument();
-    expect(getByText('Transformations')).toBeInTheDocument();
+    expect(getByText(/Transformations/)).toBeInTheDocument();
   });
 
   it('passes correct props to TopBar', () => {
@@ -74,6 +76,6 @@ describe('App Component', () => {
   it('throws error for unsupported view', () => {
     const mockAppState = createMockAppState({ mainView: 'INVALID_VIEW' as any });
     
-    expect(() => render(<App appState={mockAppState} />)).toThrow('View INVALID_VIEW not supported');
+    expect(() => render(<App appState={mockAppState} />)).toThrow('View INVALID_VIEW not supported!');
   });
 }); 

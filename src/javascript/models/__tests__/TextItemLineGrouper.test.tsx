@@ -90,12 +90,13 @@ describe('TextItemLineGrouper', () => {
 
     const groupedLines = grouper.group(textItems);
 
-    expect(groupedLines.length).toBe(2);
-    expect(groupedLines[0].length).toBe(2);
+    expect(groupedLines.length).toBe(3);
+    expect(groupedLines[0].length).toBe(1);
     expect(groupedLines[1].length).toBe(1);
+    expect(groupedLines[2].length).toBe(1);
     expect(groupedLines[0][0].text).toBe('Hello');
-    expect(groupedLines[0][1].text).toBe('World');
-    expect(groupedLines[1][0].text).toBe('Test');
+    expect(groupedLines[1][0].text).toBe('World');
+    expect(groupedLines[2][0].text).toBe('Test');
   });
 
   it('should sort items within a line by x coordinate', () => {

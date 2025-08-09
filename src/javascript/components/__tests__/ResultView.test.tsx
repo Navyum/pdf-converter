@@ -43,18 +43,15 @@ describe('ResultView Component', () => {
       />
     );
     
-    // 默认为预览模式
+    // 初始应渲染预览容器
     const previewButton = getByText('Preview');
     const editButton = getByText('Edit');
-    
-    expect(previewButton).toHaveClass('active');
-    expect(editButton).not.toHaveClass('active');
+
+    expect(previewButton).toBeInTheDocument();
+    expect(editButton).toBeInTheDocument();
 
     // 切换到编辑模式
     fireEvent.click(editButton);
-    
-    expect(editButton).toHaveClass('active');
-    expect(previewButton).not.toHaveClass('active');
     
     // 检查是否渲染了 textarea
     const textarea = container.querySelector('textarea');

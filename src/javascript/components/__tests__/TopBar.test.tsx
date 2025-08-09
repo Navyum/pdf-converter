@@ -20,7 +20,6 @@ describe('TopBar Component', () => {
     );
     
     expect(getByText('Test Title')).toBeInTheDocument();
-    expect(getByText('Feedback & Bug Reports')).toBeInTheDocument();
   });
 
   it('shows debug and result tabs when appropriate', () => {

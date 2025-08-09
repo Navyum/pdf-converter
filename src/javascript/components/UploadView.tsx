@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import Dropzone, { DropzoneProps } from 'react-dropzone';
+import Dropzone from 'react-dropzone';
 
 // 定义组件的 Props 类型
 interface UploadViewProps {
@@ -10,6 +10,11 @@ const UploadView: React.FC<UploadViewProps> = ({ uploadPdfFunction }) => {
   const [error, setError] = useState<string | null>(null);
 
   const onDrop = useCallback((files: File[]) => {
+    setError(null);
+    if (!files || files.length === 0) {
+      setError('No file dropped.');
+      return;
+    }
     if (files.length > 1) {
       setError(`Maximum one file allowed to upload, but not ${files.length}!`);
       return;
@@ -29,9 +34,11 @@ const UploadView: React.FC<UploadViewProps> = ({ uploadPdfFunction }) => {
     <div>
       <Dropzone
         onDrop={onDrop}
+        accept={{ 'application/pdf': ['.pdf'] }}
+        maxFiles={1}
         multiple={false}
       >
-        {({ getRootProps, getInputProps, isDragActive }: any) => (
+        {(({ getRootProps, getInputProps, isDragActive }: any) => (
           <div
             {...getRootProps()}
             style={{
@@ -69,7 +76,7 @@ const UploadView: React.FC<UploadViewProps> = ({ uploadPdfFunction }) => {
               </i>
             </div>
           </div>
-        )}
+        )) as unknown as React.ReactNode}
       </Dropzone>
       {error && <div style={{ color: 'red' }}>{error}</div>}
       <br/><br/><br/><br/><br/><br/>

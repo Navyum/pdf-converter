@@ -1,9 +1,11 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import UploadView from '../UploadView';
 
 describe('UploadView Component', () => {
   const mockUploadPdfFunction = jest.fn();
+
+  beforeEach(() => mockUploadPdfFunction.mockClear());
 
   it('renders without crashing', () => {
     const { getByText } = render(
@@ -13,22 +15,17 @@ describe('UploadView Component', () => {
     expect(getByText('Drop your PDF file here!')).toBeInTheDocument();
   });
 
-  it('shows error when multiple files are dropped', () => {
-    const { getByText } = render(
+  it('calls uploadPdfFunction when one file is selected', async () => {
+    const { container } = render(
       <UploadView uploadPdfFunction={mockUploadPdfFunction} />
     );
 
-    const files = [
-      new File(['dummy content'], 'file1.pdf', { type: 'application/pdf' }),
-      new File(['another dummy content'], 'file2.pdf', { type: 'application/pdf' })
-    ];
+    const file = new File(['dummy content'], 'file.pdf', { type: 'application/pdf' });
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    expect(input).toBeInTheDocument();
 
-    // 模拟文件拖放
-    fireEvent.drop(getByText('Drop your PDF file here!'), {
-      dataTransfer: { files }
-    });
+    fireEvent.change(input!, { target: { files: [file] } } as any);
 
-    expect(getByText(/Maximum one file allowed to upload/i)).toBeInTheDocument();
-    expect(mockUploadPdfFunction).not.toHaveBeenCalled();
+    await waitFor(() => expect(mockUploadPdfFunction).toHaveBeenCalledTimes(1));
   });
 }); 

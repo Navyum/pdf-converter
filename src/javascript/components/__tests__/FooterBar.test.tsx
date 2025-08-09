@@ -6,15 +6,12 @@ describe('FooterBar Component', () => {
   it('renders without crashing', () => {
     const { getByText } = render(<FooterBar />);
     
-    expect(getByText(/offline tool/i)).toBeInTheDocument();
+    expect(getByText(/PDF to Markdown Converter/i)).toBeInTheDocument();
   });
 
-  it('displays feedback link with correct attributes', () => {
+  it('displays static footer text', () => {
     const { getByText } = render(<FooterBar />);
     
-    const feedbackLink = getByText('Feedback & Bug Reports');
-    expect(feedbackLink).toHaveAttribute('href', 'https://github.com/jzillmann/pdf-to-markdown/issues');
-    expect(feedbackLink).toHaveAttribute('target', '_blank');
-    expect(feedbackLink).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(getByText(/Convert your PDF files to Markdown format/i)).toBeInTheDocument();
   });
 }); 

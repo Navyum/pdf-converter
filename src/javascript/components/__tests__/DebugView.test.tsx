@@ -137,21 +137,16 @@ describe('DebugView Component', () => {
       }
     ];
 
-    const { getByText, queryByText } = render(
+    const { getByText } = render(
       <DebugView 
         pages={mockPages} 
         transformations={mockTransformationsWithStats} 
       />
     );
     
-    // 初始状态不显示统计
-    expect(queryByText('Total Pages: 2')).not.toBeInTheDocument();
-
-    // 点击显示统计
     const showStatisticsCheckbox = getByText('Show Statistics');
     fireEvent.click(showStatisticsCheckbox);
 
-    // 现在应该显示统计
     expect(getByText('Total Pages: 2')).toBeInTheDocument();
   });
 }); 

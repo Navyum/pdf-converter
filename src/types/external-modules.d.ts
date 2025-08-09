@@ -2,11 +2,19 @@
 declare module 'react-dropzone' {
   import { ReactNode } from 'react';
 
+  export interface DropzoneRenderProps {
+    getRootProps: () => any;
+    getInputProps: () => any;
+    isDragActive: boolean;
+  }
+
   export interface DropzoneProps {
     onDrop: (files: File[]) => void;
     multiple?: boolean;
+    maxFiles?: number;
+    accept?: string | { [mime: string]: string[] };
     style?: React.CSSProperties;
-    children?: ReactNode;
+    children?: ((props: DropzoneRenderProps) => ReactNode) | ReactNode;
   }
 
   export default function Dropzone(props: DropzoneProps): JSX.Element;
