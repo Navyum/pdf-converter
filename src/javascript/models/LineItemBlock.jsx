@@ -1,7 +1,7 @@
-import PageItem from './PageItem.jsx'
 import LineItem from './LineItem.jsx'
+import PageItem from './PageItem.jsx'
 
-// A block of LineItem[] within a Page
+// A block of LineItem[] within a page
 export default class LineItemBlock extends PageItem {
 
     constructor(options) {

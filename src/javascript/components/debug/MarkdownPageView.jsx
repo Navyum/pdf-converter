@@ -1,6 +1,6 @@
 import React from 'react';
 import PageView from './PageView.jsx';
-import Remarkable from 'remarkable';
+import { Remarkable } from 'remarkable';
 
 export default class MarkdownPageView extends PageView {
 

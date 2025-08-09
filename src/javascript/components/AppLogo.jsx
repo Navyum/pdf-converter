@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FaFilePdfO from 'react-icons/lib/fa/file-pdf-o'
 
 export default class AppLogo extends React.Component {
 
     static propTypes = {
-        onClick: React.PropTypes.func,
+        onClick: PropTypes.func,
     };
 
     constructor(props, context) {

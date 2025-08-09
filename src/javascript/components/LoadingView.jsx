@@ -1,21 +1,18 @@
 import React from 'react';
-import FaCheck from 'react-icons/lib/fa/check'
+import PropTypes from 'prop-types';
 
-const pdfjs = require('pdfjs-dist'); // eslint-disable-line no-unused-vars
-import { Line } from 'rc-progress';
+import * as pdfjs from 'pdfjs-dist/build/pdf'; // eslint-disable-line no-unused-vars
+pdfjs.GlobalWorkerOptions && (pdfjs.GlobalWorkerOptions.workerSrc = 'bundle.worker.js');
 
-import Metadata from '../models/Metadata.jsx';
 import Page from '../models/Page.jsx';
 import TextItem from '../models/TextItem.jsx';
+import Metadata from '../models/Metadata.jsx';
 
-pdfjs.GlobalWorkerOptions.workerSrc = 'bundle.worker.js';
-
-// Parses the PDF pages and displays progress
 export default class LoadingView extends React.Component {
 
     static propTypes = {
-        fileBuffer: React.PropTypes.object.isRequired,
-        storePdfPagesFunction: React.PropTypes.func.isRequired,
+        fileBuffer: PropTypes.object.isRequired,
+        storePdfPagesFunction: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -43,18 +40,22 @@ export default class LoadingView extends React.Component {
             pages: [],
             fontIds: new Set(),
             fontMap: new Map(),
+            parsedPages: new Set(),
             progress: progress,
         };
+        // one-time dispatch guard
+        this._didDispatchComplete = false;
+        this._didStartParse = false;
     }
 
     documentParsed(document) {
         const metadataStage = this.state.progress.metadataStage();
         const pageStage = this.state.progress.pageStage();
-        metadataStage.stepsDone++;
+        metadataStage.stepsDone = Math.min(metadataStage.stepsDone + 1, metadataStage.steps);
 
         const numPages = document.numPages;
         pageStage.steps = numPages;
-        pageStage.stepsDone;
+        pageStage.stepsDone = 0;
 
         var pages = [];
         for (var i = 0; i < numPages; i++) {
@@ -71,7 +72,7 @@ export default class LoadingView extends React.Component {
 
     metadataParsed(metadata) {
         const metadataStage = this.state.progress.metadataStage();
-        metadataStage.stepsDone++;
+        metadataStage.stepsDone = Math.min(metadataStage.stepsDone + 1, metadataStage.steps);
         // console.debug(new Metadata(metadata));
         this.setState({
             metadata: new Metadata(metadata),
@@ -81,8 +82,15 @@ export default class LoadingView extends React.Component {
     pageParsed(index, textItems) {
         const pageStage = this.state.progress.pageStage();
 
-        pageStage.stepsDone = pageStage.stepsDone + 1;
+        if (!this.state.pages[index]) {
+            this.state.pages[index] = new Page({ index, items: null });
+        }
+        if (!this.state.parsedPages.has(index)) {
+            this.state.parsedPages.add(index);
+            pageStage.stepsDone = Math.min(pageStage.stepsDone + 1, pageStage.steps);
+        }
         this.state.pages[index].items = textItems; // eslint-disable-line react/no-direct-mutation-state
+        console.log('[LoadingView] pageParsed index=', index, 'itemsLen=', Array.isArray(textItems) ? textItems.length : (textItems ? 1 : 0));
         this.setState({
             progress: this.state.progress
         });
@@ -99,12 +107,17 @@ export default class LoadingView extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        if (this._didStartParse) { return; }
+        this._didStartParse = true;
         const self = this;
         const fontStage = this.state.progress.fontStage();
 
+        // 创建 ArrayBuffer 的副本以避免 detached 错误
+        const fileBufferCopy = this.props.fileBuffer.slice();
+        
         pdfjs.getDocument({
-            data: this.props.fileBuffer,
+            data: fileBufferCopy,
             cMapUrl: 'cmaps/',
             cMapPacked: true
         }).promise.then(function(pdfDocument) { // eslint-disable-line no-undef
@@ -116,40 +129,54 @@ export default class LoadingView extends React.Component {
             self.documentParsed(pdfDocument);
             for (var j = 1; j <= pdfDocument.numPages; j++) {
                 pdfDocument.getPage(j).then(function(page) {
-                    // console.debug(page);
+
                     var scale = 1.0;
                     var viewport = page.getViewport({scale: scale});
 
                     page.getTextContent().then(function(textContent) {
-                        // console.debug(textContent);
-                        const textItems = textContent.items.map(function(item) {
-                            //trigger resolving of fonts
-                            const fontId = item.fontName;
-                            if (!self.state.fontIds.has(fontId) && fontId.startsWith('g_d0')) {
-                                self.state.document._transport.commonObjs.get(fontId, function(font) {
-                                    self.fontParsed(fontId, font);
+                        try {
+                            const textItems = (textContent.items || []).map(function(item) {
+                                const fontId = item.fontName;
+                                if (fontId && !self.state.fontIds.has(fontId) && typeof fontId === 'string' && fontId.indexOf('g_d0') === 0) {
+                                    const transport = self.state.document && self.state.document._transport;
+                                    const commonObjs = transport && transport.commonObjs;
+                                    if (commonObjs && typeof commonObjs.get === 'function') {
+                                        commonObjs.get(fontId, function(font) {
+                                            self.fontParsed(fontId, font);
+                                        });
+                                    }
+                                    self.state.fontIds.add(fontId);
+                                    fontStage.steps = self.state.fontIds.size;
+                                }
+
+                                const baseTransform = Array.isArray(item.transform) ? item.transform : [1,0,0,1,0,0];
+                                let tx = baseTransform;
+                                try {
+                                    if (pdfjs && pdfjs.Util && typeof pdfjs.Util.transform === 'function') {
+                                        tx = pdfjs.Util.transform(viewport.transform, baseTransform);
+                                    }
+                                } catch (e) {}
+                                const a = tx[2] || 0;
+                                const b = tx[3] || 0;
+                                const fontHeight = Math.sqrt(a*a + b*b) || 1;
+                                const dividedHeight = item.height ? (item.height / fontHeight) : 0;
+                                return new TextItem({
+                                    x: Math.round(baseTransform[4] || 0),
+                                    y: Math.round(baseTransform[5] || 0),
+                                    width: Math.round(item.width || 0),
+                                    height: Math.round(dividedHeight <= 1 ? (item.height || 0) : dividedHeight),
+                                    text: item.str || '',
+                                    font: fontId || ''
                                 });
-                                self.state.fontIds.add(fontId);
-                                fontStage.steps = self.state.fontIds.size;
-                            }
-
-                            const tx = pdfjs.Util.transform( // eslint-disable-line no-undef
-                                viewport.transform,
-                                item.transform
-                            );
-
-                            const fontHeight = Math.sqrt((tx[2] * tx[2]) + (tx[3] * tx[3]));
-                            const dividedHeight = item.height / fontHeight;
-                            return new TextItem({
-                                x: Math.round(item.transform[4]),
-                                y: Math.round(item.transform[5]),
-                                width: Math.round(item.width),
-                                height: Math.round(dividedHeight <= 1 ? item.height : dividedHeight),
-                                text: item.str,
-                                font: item.fontName
                             });
-                        });
-                        self.pageParsed(page._pageIndex, textItems);
+                            self.pageParsed(page.pageNumber - 1, textItems);
+                        } catch (e) {
+                            console.warn('[LoadingView] getTextContent build error, set empty for page', page.pageNumber - 1, e);
+                            self.pageParsed(page.pageNumber - 1, []);
+                        }
+                    }).catch(function(err) {
+                        console.warn('[LoadingView] getTextContent failed for page', page.pageNumber - 1, err);
+                        self.pageParsed(page.pageNumber - 1, []);
                     });
                     page.getOperatorList().then(function() {
                         // do nothing... this is only for triggering the font retrieval
@@ -159,15 +186,22 @@ export default class LoadingView extends React.Component {
         });
     }
 
+    componentDidUpdate() {
+        const { progress, pages } = this.state;
+        if (!this._didDispatchComplete && getPercentDone(progress) === 100) {
+            this._didDispatchComplete = true;
+            const totalItems = Array.isArray(pages) ? pages.reduce((s, p) => s + (Array.isArray(p.items) ? p.items.length : 0), 0) : 0;
+            console.log('[LoadingView] dispatch storePdfPagesFunction with pages:', pages?.length, 'totalItems:', totalItems);
+            this.props.storePdfPagesFunction({ pages, metadata: this.state.metadata, fontMap: this.state.fontMap });
+        }
+    }
+
     render() {
         const {pages, fontMap, metadata, progress} = this.state;
         const percentDone = getPercentDone(progress);
-        if (percentDone == 100) {
-            this.props.storePdfPagesFunction(metadata, fontMap, pages);
-        }
         const stageItems = progress.stages.filter((elem, i) => i <= progress.currentStage).map((stage, i) => {
             const progressDetails = stage.steps ? stage.stepsDone + ' / ' + stage.steps : '';
-            const checkmark = stage.isComplete() ? <FaCheck color={ 'green' } /> : '';
+            const checkmark = stage.isComplete() ? <span style={{color: 'green'}}>✓</span> : '';
             return <div key={ i }>
                      { stage.name }
                      { ' ' + progressDetails + ' ' }
@@ -179,7 +213,9 @@ export default class LoadingView extends React.Component {
               <br/>
               <br/>
               <br/>
-              <Line percent={ percentDone } strokeWidth="2" strokeColor="#D3D3D3" />
+              <div style={{width: '300px', height: '20px', border: '1px solid #ccc', margin: '0 auto'}}>
+                <div style={{width: percentDone + '%', height: '100%', backgroundColor: '#D3D3D3'}}></div>
+              </div>
               <br/>
               <br/>
               <div>
@@ -196,13 +232,21 @@ export default class LoadingView extends React.Component {
 }
 
 function getPercentDone(progress) {
+    if (progress.isComplete()) {
+        return 100;
+    }
+    
     const activeStage = progress.activeStage();
+    if (!activeStage) {
+        return 100;
+    }
+    
     const percentDone = activeStage.percentDone();
 
-    if (percentDone == 100) {
+    if (percentDone >= 100) {
         progress.completeStage();
         if (!progress.isComplete()) {
-            return getPercentDone(progress, 0);
+            return getPercentDone(progress);
         }
     }
 
@@ -243,15 +287,14 @@ class ProgressStage {
     }
 
     percentDone() {
-        if (typeof this.steps === 'undefined') {
-            // if (!this.steps) {
+        if (typeof this.steps === 'undefined' || this.steps === null) {
             return 0;
         }
         if (this.steps == 0) {
             return 100;
         }
 
-        return this.stepsDone / this.steps * 100;
+        return Math.min(this.stepsDone / this.steps * 100, 100);
     }
 }
 

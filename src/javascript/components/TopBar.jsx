@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Navbar from 'react-bootstrap/lib/Navbar'
 import Nav from 'react-bootstrap/lib/Nav'
@@ -14,9 +15,9 @@ import { View } from '../models/AppState.jsx';
 export default class TopBar extends React.Component {
 
     static propTypes = {
-        mainView: React.PropTypes.object.isRequired,
-        switchMainViewFunction: React.PropTypes.func.isRequired,
-        title: React.PropTypes.string.isRequired,
+        mainView: PropTypes.object.isRequired,
+        switchMainViewFunction: PropTypes.func.isRequired,
+        title: PropTypes.string.isRequired,
     };
 
     render() {

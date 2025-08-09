@@ -1,5 +1,5 @@
-import PageItem from './PageItem.jsx'
 import Word from './Word.jsx'
+import PageItem from './PageItem.jsx'
 
 //A line within a page
 export default class LineItem extends PageItem {

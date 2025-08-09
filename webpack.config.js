@@ -12,13 +12,14 @@ module.exports = {
     mode: 'development', 
     context: SOURCE_DIR,
     resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
         modules: [
             path.resolve(JAVASCRIPT_DIR),
             path.resolve('./node_modules')
         ]
     },
     entry: {
-        app: './javascript/index.jsx'
+        app: './javascript/index.tsx'
     },
     output: {
         path: BUILD_DIR,
@@ -27,8 +28,17 @@ module.exports = {
     module: {
         rules: [
             {
-                // Ask webpack to check: If this file ends with .js, then apply some transforms
-                test: /\.jsx?$/,
+                test: /\.(ts|tsx)$/,
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        transpileOnly: true
+                    }
+                },
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
                 include: [JAVASCRIPT_DIR],
             },
@@ -37,28 +47,8 @@ module.exports = {
                 use: ['style-loader', 'css-loader']
             },
             {
-                test: /\.png$/,
-                use: ["url-loader?limit=100000"]
-            },
-            {
-                test: /\.jpg$/,
-                loader: "file-loader"
-            },
-            {
-                test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-                use: ['url-loader?limit=10000&mimetype=application/font-woff']
-            },
-            {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                use: ['url-loader?limit=10000&mimetype=application/octet-stream']
-            },
-            {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                use: ['file-loader']
-            },
-            {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                use: ['url-loader?limit=10000&mimetype=image/svg+xml']
+                test: /\.(png|jpg|svg|woff|woff2|ttf|eot)$/,
+                type: 'asset/resource'
             }
         ]
     },
@@ -72,35 +62,24 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
             }
         }),
-        new CopyWebpackPlugin(
-            {
-                patterns: [
-                    {
-                        from: NODEMODULES_DIR + '/pdfjs-dist/build/pdf.worker.js',
-                        to: 'bundle.worker.js'
-                    },
-                ]
-            }
-        ),
-        new CopyWebpackPlugin(
-            {
-                patterns: [
-                    {
-                        from: NODEMODULES_DIR + '/pdfjs-dist/cmaps',
-                        to: 'cmaps'
-                    },
-                ]
-            }
-        ),
-        new CopyWebpackPlugin(
-            {
-                patterns: [
-                    {
-                        from: 'favicons',
-                        to: 'favicons'
-                    },
-                ]
-            }
-        )
-    ]
-}
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: NODEMODULES_DIR + '/pdfjs-dist/build/pdf.worker.js',
+                    to: 'bundle.worker.js'
+                },
+                {
+                    from: NODEMODULES_DIR + '/pdfjs-dist/cmaps',
+                    to: 'cmaps'
+                },
+                {
+                    from: 'favicons',
+                    to: 'favicons'
+                }
+            ]
+        })
+    ],
+    stats: {
+        errorDetails: true
+    }
+};

@@ -1,4 +1,3 @@
-import ParseResult from '../ParseResult.jsx';
 
 // A transformation from an PdfPage to an PdfPage
 export default class Transformation {

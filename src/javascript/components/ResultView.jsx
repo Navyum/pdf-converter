@@ -1,24 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Remarkable from 'remarkable';
 
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
 import Button from 'react-bootstrap/lib/Button'
 
-import ParseResult from '../models/ParseResult.jsx';
 
 export default class ResultView extends React.Component {
 
     static propTypes = {
-        pages: React.PropTypes.array.isRequired,
-        transformations: React.PropTypes.array.isRequired,
+        pages: PropTypes.array.isRequired,
+        transformations: PropTypes.array.isRequired,
     };
 
     constructor(props) {
         super(props);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {pages, transformations} = this.props;
         var parseResult = new ParseResult({
             pages: pages

@@ -1,9 +1,8 @@
 import React from 'react';
 import Transformation from './Transformation.jsx';
-import ParseResult from '../ParseResult.jsx';
+import { REMOVED_ANNOTATION } from '../Annotation.jsx';
 import LineItemBlock from '../LineItemBlock.jsx';
 import LineItemBlockPageView from '../../components/debug/LineItemBlockPageView.jsx';
-import { REMOVED_ANNOTATION } from '../Annotation.jsx';
 
 // Abstract class for transformations producing LineItemBlock(s) to be shown in the LineItemBlockPageView
 export default class ToLineItemBlockTransformation extends Transformation {

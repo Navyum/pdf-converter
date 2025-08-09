@@ -1,8 +1,8 @@
 import ToLineItemTransformation from '../ToLineItemTransformation.jsx';
-import ParseResult from '../../ParseResult.jsx';
 import LineItem from '../../LineItem.jsx';
 import StashingStream from '../../StashingStream.jsx';
 import { REMOVED_ANNOTATION, ADDED_ANNOTATION } from '../../Annotation.jsx';
+import ParseResult from '../../ParseResult.jsx';
 
 // Converts vertical text to horizontal
 export default class VerticalToHorizontal extends ToLineItemTransformation {

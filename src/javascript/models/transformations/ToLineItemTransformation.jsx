@@ -1,6 +1,5 @@
 import React from 'react';
 import Transformation from './Transformation.jsx';
-import ParseResult from '../ParseResult.jsx';
 import LineItem from '../LineItem.jsx';
 import LineItemPageView from '../../components/debug/LineItemPageView.jsx';
 import { REMOVED_ANNOTATION } from '../Annotation.jsx';

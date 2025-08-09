@@ -1,30 +1,28 @@
-import { Enum } from 'enumify';
-
-// An Markdown word element
-export default class WordType extends Enum {
-
-}
-
-WordType.initEnum({
+// Plain object replacement for enumify-based WordType
+const WordType = {
     LINK: {
+        name: 'LINK',
         toText(string) {
             return `[${string}](${string})`
         }
     },
     FOOTNOTE_LINK: {
+        name: 'FOOTNOTE_LINK',
         attachWithoutWhitespace: true,
         plainTextFormat: true,
         toText(string) {
             return `^${string}`
-        // return `<sup>[${string}](#${string})</sup>`;
         }
     },
     FOOTNOTE: {
+        name: 'FOOTNOTE',
         toText(string) {
             return `(^${string})`
         }
     }
-});
+};
+
+export default WordType;
 
 export function linesToText(lineItems, disableInlineFormats) {
     var text = '';

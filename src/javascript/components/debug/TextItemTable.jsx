@@ -1,13 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import Table from 'react-bootstrap/lib/Table'
+import { Table } from 'react-bootstrap'
 
 // Displays an array of TextItem as a table
 export default class TextItemTable extends React.Component {
 
     static propTypes = {
-        textItems: React.PropTypes.array.isRequired,
-        showWhitespaces: React.PropTypes.bool
+        textItems: PropTypes.array.isRequired,
+        showWhitespaces: PropTypes.bool
     };
 
     render() {
@@ -103,7 +104,7 @@ export default class TextItemTable extends React.Component {
         )
 
         return (
-            <Table responsive condensed bordered>
+            <Table responsive bordered size="sm">
               { tableHeader }
               <tbody>
                 { textItemRows }

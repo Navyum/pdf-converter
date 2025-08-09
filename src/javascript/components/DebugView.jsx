@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar'
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup'
@@ -12,14 +13,13 @@ import Collapse from 'react-bootstrap/lib/Collapse'
 import Panel from 'react-bootstrap/lib/Panel'
 import AutoAffix from 'react-overlays/lib/AutoAffix';
 
-import ParseResult from '../models/ParseResult.jsx';
 
 // A view which displays the content of the given pages transformed by the given transformations
 export default class DebugView extends React.Component {
 
     static propTypes = {
-        pages: React.PropTypes.array.isRequired,
-        transformations: React.PropTypes.array.isRequired,
+        pages: PropTypes.array.isRequired,
+        transformations: PropTypes.array.isRequired,
     };
 
     constructor(props) {

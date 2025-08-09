@@ -1,4 +1,3 @@
-import PageItem from './models/PageItem.jsx';
 
 export function minXFromBlocks(blocks) {
     var minX = 999;

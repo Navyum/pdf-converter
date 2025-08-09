@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Grid from 'react-bootstrap/lib/Grid'
 
@@ -13,7 +14,7 @@ import DebugView from './DebugView.jsx';
 export default class App extends React.Component {
 
     static propTypes = {
-        appState: React.PropTypes.object.isRequired,
+        appState: PropTypes.object.isRequired,
     };
 
     render() {

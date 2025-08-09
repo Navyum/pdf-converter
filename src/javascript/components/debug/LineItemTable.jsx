@@ -1,13 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import Table from 'react-bootstrap/lib/Table'
+import { Table } from 'react-bootstrap'
 
 // Displays an array of LineItem as a table
 export default class LineItemTable extends React.Component {
 
     static propTypes = {
-        items: React.PropTypes.array.isRequired,
-        showWhitespaces: React.PropTypes.bool
+        items: PropTypes.array.isRequired,
+        showWhitespaces: PropTypes.bool
     };
 
     render() {
@@ -97,7 +98,7 @@ export default class LineItemTable extends React.Component {
         )
 
         return (
-            <Table responsive condensed bordered>
+            <Table responsive bordered size="sm">
               { tableHeader }
               <tbody>
                 { itemRows }

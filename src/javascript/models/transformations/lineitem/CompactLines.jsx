@@ -1,11 +1,11 @@
 import React from 'react';
 
 import ToLineItemTransformation from '../ToLineItemTransformation.jsx';
-import ParseResult from '../../ParseResult.jsx';
 import LineItem from '../../LineItem.jsx';
 import TextItemLineGrouper from '../../TextItemLineGrouper.jsx';
 import LineConverter from '../../LineConverter.jsx';
 import BlockType from '../../markdown/BlockType.jsx';
+import ParseResult from '../../ParseResult.jsx';
 import { REMOVED_ANNOTATION, ADDED_ANNOTATION } from '../../Annotation.jsx';
 
 

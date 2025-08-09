@@ -1,8 +1,8 @@
 import React from 'react';
 import Transformation from './Transformation.jsx';
 import TextPageView from '../../components/debug/TextPageView.jsx';
-import ParseResult from '../ParseResult.jsx';
 import { blockToText } from '../markdown/BlockType.jsx';
+import ParseResult from '../ParseResult.jsx';
 
 export default class ToTextBlocks extends Transformation {
 
