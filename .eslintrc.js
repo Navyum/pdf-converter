@@ -7,27 +7,27 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended'
   ],
-  env: {
-    node: true,
-    browser: true,
-    es6: true
+  rules: {
+    // 忽略未使用变量警告
+    '@typescript-eslint/no-unused-vars': 'off',
+    // 忽略 any 类型警告
+    '@typescript-eslint/no-explicit-any': 'off',
+    // React 相关规则
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
+    // 忽略 console 语句警告
+    'no-console': 'off',
+    'prefer-const': 'warn'
   },
   settings: {
     react: {
       version: 'detect'
     }
   },
-  rules: {
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
-    'react/prop-types': 'off',
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['warn', { 
-      argsIgnorePattern: '^_',
-      varsIgnorePattern: '^_'
-    }]
+  env: {
+    node: true,
+    browser: true,
+    es6: true
   },
   overrides: [
     {

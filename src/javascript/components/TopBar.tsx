@@ -7,7 +7,7 @@ import { View } from '../models/AppState';
 interface TopBarProps {
   mainView: View;
   switchMainViewFunction: (view: View) => void;
-  title: string;
+  title?: string;
   onHelp?: () => void;
 }
 

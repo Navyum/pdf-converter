@@ -24,7 +24,7 @@ module.exports = {
     output: {
         path: BUILD_DIR,
         filename: 'bundle.js',
-        publicPath: '/'
+        publicPath: process.env.NODE_ENV === 'production' ? './' : '/'
     },
     module: {
         rules: [
@@ -74,12 +74,8 @@ module.exports = {
                     to: 'cmaps'
                 },
                 {
-                    from: 'favicons',
-                    to: 'favicons'
-                },
-                {
-                    from: path.resolve(__dirname, 'CNAME'),
-                    to: '[name][ext]'
+                    from: path.resolve(__dirname, 'public'),
+                    to: '.'
                 }
             ]
         })

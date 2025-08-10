@@ -5,7 +5,7 @@ import '../css/styles.css';
 
 import AppState from './models/AppState';
 import App from './components/App';
-import { View } from './models/AppState';
+// import { View } from './models/AppState';
 
 // PDF.js 配置
 import * as pdfjsLib from 'pdfjs-dist';

@@ -3,9 +3,9 @@ import * as pdfjs from 'pdfjs-dist';
 import TextItem from '../models/TextItem';
 import Page from '../models/Page';
 import Metadata from '../models/Metadata';
-import Word from '../models/Word';
-import WordFormatModule from '../models/markdown/WordFormat';
-import WordType from '../models/markdown/WordType';
+// import Word from '../models/Word';
+// import WordFormatModule from '../models/markdown/WordFormat';
+// import WordType from '../models/markdown/WordType';
 
 pdfjs.GlobalWorkerOptions.workerSrc = 'bundle.worker.js';
 
@@ -216,7 +216,7 @@ class LoadingView extends Component<LoadingViewProps, LoadingViewState> {
     const fontStage = this.state.progress.fontStage();
     
     // 设置字体解析超时，防止无限等待
-    const fontTimeout = setTimeout(() => {
+    const _fontTimeout = setTimeout(() => {
       if (this.state.progress.activeStage() === fontStage && fontStage.stepsDone > 0) {
         console.log('Font parsing timeout, proceeding with available fonts');
         this.forceCompleteFontStage();
@@ -301,7 +301,7 @@ class LoadingView extends Component<LoadingViewProps, LoadingViewState> {
   }
 
   render(): React.ReactElement {
-    const { pages, fontMap, metadata, progress } = this.state;
+    const { progress } = this.state;
     const percentDone = this.getPercentDone(progress);
     
     const stageItems = progress.stages
