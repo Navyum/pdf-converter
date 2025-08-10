@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Line } from 'rc-progress';
 import * as pdfjs from 'pdfjs-dist';
 import TextItem from '../models/TextItem';
 import Page from '../models/Page';
@@ -332,11 +331,18 @@ class LoadingView extends Component<LoadingViewProps, LoadingViewState> {
           <p>请稍候，我们正在解析和转换您的文档</p>
           
           <div className="progress-container">
-            <Line 
-              percent={percentDone} 
-              strokeWidth={2} 
-              strokeColor="#D3D3D3" 
-            />
+            <div className="progress-bar">
+              <div 
+                className="progress-fill" 
+                style={{ 
+                  width: `${percentDone}%`,
+                  backgroundColor: '#007bff',
+                  height: '4px',
+                  borderRadius: '2px',
+                  transition: 'width 0.3s ease'
+                }}
+              />
+            </div>
             <div className="progress-stages">
               {stageItems}
             </div>
