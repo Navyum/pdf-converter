@@ -79,7 +79,7 @@ module.exports = {
                 },
                 {
                     from: path.resolve(__dirname, 'CNAME'),
-                    to: 'CNAME'
+                    to: '[name][ext]'
                 }
             ]
         })
