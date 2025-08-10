@@ -1,8 +1,8 @@
-import ToLineItemTransformation from '../ToLineItemTransformation.jsx';
-import { DETECTED_ANNOTATION } from '../../Annotation.jsx';
-import BlockType from '../../markdown/BlockType.jsx';
-import { headlineByLevel } from '../../markdown/BlockType.jsx';
-import ParseResult from '../../ParseResult.jsx';
+import ToLineItemTransformation from '../ToLineItemTransformation';
+import { DETECTED_ANNOTATION } from '../../Annotation';
+import BlockType from '../../markdown/BlockType';
+import { headlineByLevel } from '../../markdown/BlockType';
+import ParseResult from '../../ParseResult';
 import { isListItem } from '../../../stringFunctions';
 
 //Detect headlines based on heights

@@ -1,6 +1,6 @@
 import ToTextItemTransformation from '../ToTextItemTransformation.jsx';
 import WordFormat from '../../markdown/WordFormat.jsx';
-import ParseResult from '../../ParseResult.jsx';
+import ParseResult from '../../ParseResult';
 
 export default class CalculateGlobalStats extends ToTextItemTransformation {
 

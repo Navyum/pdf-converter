@@ -91,6 +91,12 @@ def('PARAGRAPH', {
   }
 });
 
+def('IMAGE', {
+  toText(block) {
+    return '[Image]';
+  }
+});
+
 export function isHeadline(type) {
   return type && type.name && type.name.length === 2 && type.name[0] === 'H';
 }

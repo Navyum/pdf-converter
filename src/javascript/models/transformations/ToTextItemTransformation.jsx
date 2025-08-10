@@ -1,8 +1,8 @@
 import React from 'react';
 import Transformation from './Transformation.jsx';
-import TextItem from '../TextItem.jsx';
-import TextItemPageView from '../../components/debug/TextItemPageView.jsx';
-import { REMOVED_ANNOTATION } from '../Annotation.jsx';
+import TextItem from '../TextItem';
+import TextItemPageView from '../../components/debug/TextItemPageView';
+import { REMOVED_ANNOTATION } from '../Annotation';
 
 // Abstract class for transformations producing TextItem(s) to be shown in the TextItemPageView
 export default class ToTextItemTransformation extends Transformation {

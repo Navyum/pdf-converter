@@ -10,18 +10,18 @@ const UploadView: React.FC<UploadViewProps> = ({ onDrop, error }) => {
   return (
     <div className="upload-wrap">
       <div className="upload-shell">
-        <Dropzone
-          onDrop={onDrop}
-          accept={{ 'application/pdf': ['.pdf'] }}
-          maxFiles={1}
-          multiple={false}
-        >
+      <Dropzone
+        onDrop={onDrop}
+        accept={{ 'application/pdf': ['.pdf'] }}
+        maxFiles={1}
+        multiple={false}
+      >
           {({ getRootProps, getInputProps, isDragActive }) => (
-            <div
-              {...getRootProps()}
+          <div
+            {...getRootProps()}
               className={`upload-card ${isDragActive ? 'drag' : ''}`}
-            >
-              <input {...getInputProps()} />
+          >
+            <input {...getInputProps()} />
               <div className="upload-icon">
                 <i className="fas fa-cloud-upload-alt" aria-hidden="true"></i>
               </div>
@@ -33,12 +33,12 @@ const UploadView: React.FC<UploadViewProps> = ({ onDrop, error }) => {
                   <i className="fas fa-folder-open"></i>
                   <span>选择文件</span>
                 </button>
-              </div>
+            </div>
               {error && <div style={{ color: 'var(--error-color)', marginTop: 12 }}>{error}</div>}
             </div>
           )}
         </Dropzone>
-      </div>
+          </div>
     </div>
   );
 };

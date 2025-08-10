@@ -31,11 +31,11 @@ describe('ResultView Component', () => {
       />
     );
     
-    expect(getByText('Edit')).toBeInTheDocument();
-    expect(getByText('Preview')).toBeInTheDocument();
+    expect(getByText('预览')).toBeInTheDocument();
+    expect(getByText('编辑')).toBeInTheDocument();
   });
 
-  it('switches between edit and preview modes', () => {
+  it('displays both preview and edit panels', () => {
     const { getByText, container } = render(
       <ResultView 
         pages={mockPages} 
@@ -43,18 +43,35 @@ describe('ResultView Component', () => {
       />
     );
     
-    // 初始应渲染预览容器
-    const previewButton = getByText('Preview');
-    const editButton = getByText('Edit');
+    // 检查面板标题
+    expect(getByText('预览')).toBeInTheDocument();
+    expect(getByText('编辑')).toBeInTheDocument();
 
-    expect(previewButton).toBeInTheDocument();
-    expect(editButton).toBeInTheDocument();
-
-    // 切换到编辑模式
-    fireEvent.click(editButton);
-    
     // 检查是否渲染了 textarea
     const textarea = container.querySelector('textarea');
     expect(textarea).toBeInTheDocument();
+    
+    // 检查是否渲染了预览区域
+    const previewPanel = container.querySelector('.markdown-preview');
+    expect(previewPanel).toBeInTheDocument();
+  });
+
+  it('updates preview when editing text', () => {
+    const { container } = render(
+      <ResultView 
+        pages={mockPages} 
+        transformations={mockTransformations} 
+      />
+    );
+    
+    const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
+    expect(textarea).toBeInTheDocument();
+    
+    // 修改文本
+    fireEvent.change(textarea, { target: { value: 'Updated content' } });
+    
+    // 检查预览是否更新
+    const previewPanel = container.querySelector('.markdown-preview');
+    expect(previewPanel).toHaveTextContent('Updated content');
   });
 }); 

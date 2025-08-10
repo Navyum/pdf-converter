@@ -13,7 +13,7 @@ const AppLogo: React.FC<AppLogoProps> = ({ onClick, bsRole }) => {
   };
 
   return (
-    <a href="" onClick={handleClick} role={bsRole} className="logo">
+    <a onClick={handleClick} role={bsRole} className="logo">
       <i className="fas fa-file-pdf"></i>
       <h1>PDF To Markdown</h1>
     </a>

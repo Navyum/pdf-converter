@@ -1,7 +1,7 @@
 import React from 'react';
 import MarkdownPageView from '../../components/debug/MarkdownPageView.jsx';
 import Transformation from './Transformation.jsx';
-import ParseResult from '../ParseResult.jsx';
+import ParseResult from '../ParseResult';
 
 export default class ToMarkdown extends Transformation {
 

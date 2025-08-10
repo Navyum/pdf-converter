@@ -1,8 +1,8 @@
-import ToLineItemBlockTransformation from '../ToLineItemBlockTransformation.jsx';
-import { DETECTED_ANNOTATION } from '../../Annotation.jsx';
+import ToLineItemBlockTransformation from '../ToLineItemBlockTransformation';
+import { DETECTED_ANNOTATION } from '../../Annotation';
 import { minXFromPageItems } from '../../../pageItemFunctions';
-import ParseResult from '../../ParseResult.jsx';
-import LineItemBlock from '../../LineItemBlock.jsx';
+import ParseResult from '../../ParseResult';
+import LineItemBlock from '../../LineItemBlock';
 
 // Gathers lines to blocks
 export default class GatherBlocks extends ToLineItemBlockTransformation {

@@ -147,6 +147,10 @@ describe('DebugView Component', () => {
     const showStatisticsCheckbox = getByText('Show Statistics');
     fireEvent.click(showStatisticsCheckbox);
 
-    expect(getByText('Total Pages: 2')).toBeInTheDocument();
+    // 使用更具体的查询，避免重复文本问题
+    const totalPagesElement = getByText((content, element) => {
+      return element?.tagName === 'LI' && content.includes('Total Pages: 2');
+    });
+    expect(totalPagesElement).toBeInTheDocument();
   });
 }); 

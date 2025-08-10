@@ -22,6 +22,8 @@ export default class PageView extends React.Component {
             items = items.filter(block => block.annotation);
         }
 
+        // 分离不同类型的项目
+        const textItems = items.filter(item => item.constructor.name === 'TextItem');
 
         var content;
         if (items.length == 0 && modificationsOnly) {

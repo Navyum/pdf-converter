@@ -40,8 +40,8 @@ describe('App Component', () => {
     });
     const { getByText } = render(<App appState={mockAppState as any} />);
     
-    expect(getByText('Edit')).toBeInTheDocument();
-    expect(getByText('Preview')).toBeInTheDocument();
+    expect(getByText('预览')).toBeInTheDocument();
+    expect(getByText('编辑')).toBeInTheDocument();
   });
 
   it('renders DebugView when mainView is DEBUG', () => {

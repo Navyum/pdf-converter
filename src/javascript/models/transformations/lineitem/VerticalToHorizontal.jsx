@@ -1,8 +1,8 @@
-import ToLineItemTransformation from '../ToLineItemTransformation.jsx';
-import LineItem from '../../LineItem.jsx';
-import StashingStream from '../../StashingStream.jsx';
-import { REMOVED_ANNOTATION, ADDED_ANNOTATION } from '../../Annotation.jsx';
-import ParseResult from '../../ParseResult.jsx';
+import ToLineItemTransformation from '../ToLineItemTransformation';
+import LineItem from '../../LineItem';
+import StashingStream from '../../StashingStream';
+import { REMOVED_ANNOTATION, ADDED_ANNOTATION } from '../../Annotation';
+import ParseResult from '../../ParseResult';
 
 // Converts vertical text to horizontal
 export default class VerticalToHorizontal extends ToLineItemTransformation {
@@ -72,5 +72,9 @@ class VerticalsStream extends StashingStream {
         } else { //add as singles
             results.push(...stash);
         }
+    }
+
+    convertItem(item) {
+        return item;
     }
 }

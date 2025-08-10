@@ -17,25 +17,25 @@ const TopBar: React.FC<TopBarProps> = ({ mainView, switchMainViewFunction, title
   return (
     <div className="topbar">
       <div className="topbar-content">
-        <div>
-          <AppLogo bsRole="toggle" />
-        </div>
-        {showTabs && (
+      <div>
+        <AppLogo bsRole="toggle" />
+      </div>
+      {showTabs && (
           <div className="topbar-tabs">
-            <button 
-              onClick={() => switchMainViewFunction(View.DEBUG)}
+          <button 
+            onClick={() => switchMainViewFunction(View.DEBUG)}
               className={`btn-tab ${mainView === View.DEBUG ? 'active' : ''}`}
-            >
-              Debug View
-            </button>
-            <button 
-              onClick={() => switchMainViewFunction(View.RESULT)}
+          >
+            Debug View
+          </button>
+          <button 
+            onClick={() => switchMainViewFunction(View.RESULT)}
               className={`btn-tab ${mainView === View.RESULT ? 'active' : ''}`}
-            >
-              Result View
-            </button>
-          </div>
-        )}
+          >
+            Result View
+          </button>
+        </div>
+      )}
         <div className="topbar-actions">
           {onHelp && (
             <button className="btn-help" onClick={onHelp} title="帮助">

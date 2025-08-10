@@ -50,7 +50,7 @@ export function linesToText(lineItems, disableInlineFormats) {
                 text += openFormat.startSymbol;
             }
 
-            if (wordType && (!disableInlineFormats || wordType.plainTextFormat)) {
+            if (wordType && wordType.toText && (!disableInlineFormats || wordType.plainTextFormat)) {
                 text += wordType.toText(word.string);
             } else {
                 text += word.string;

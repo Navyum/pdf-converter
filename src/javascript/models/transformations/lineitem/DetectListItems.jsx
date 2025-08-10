@@ -1,10 +1,10 @@
-import ToLineItemTransformation from '../ToLineItemTransformation.jsx';
-import LineItem from '../../LineItem.jsx';
-import Word from '../../Word.jsx';
-import { REMOVED_ANNOTATION, ADDED_ANNOTATION, DETECTED_ANNOTATION } from '../../Annotation.jsx';
-import BlockType from '../../markdown/BlockType.jsx';
+import ToLineItemTransformation from '../ToLineItemTransformation';
+import LineItem from '../../LineItem';
+import Word from '../../Word';
+import { REMOVED_ANNOTATION, ADDED_ANNOTATION, DETECTED_ANNOTATION } from '../../Annotation';
+import BlockType from '../../markdown/BlockType';
 import { isListItemCharacter, isNumberedListItem } from '../../../stringFunctions';
-import ParseResult from '../../ParseResult.jsx';
+import ParseResult from '../../ParseResult';
 
 //Detect items starting with -, •, etc...
 export default class DetectListItems extends ToLineItemTransformation {

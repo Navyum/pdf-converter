@@ -1,8 +1,8 @@
 import React from 'react';
 import Transformation from './Transformation.jsx';
-import LineItem from '../LineItem.jsx';
+import LineItem from '../LineItem';
 import LineItemPageView from '../../components/debug/LineItemPageView.jsx';
-import { REMOVED_ANNOTATION } from '../Annotation.jsx';
+import { REMOVED_ANNOTATION } from '../Annotation';
 
 // Abstract class for transformations producing LineItem(s) to be shown in the LineItemPageView
 export default class ToLineItemTransformation extends Transformation {

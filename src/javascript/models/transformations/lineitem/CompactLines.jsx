@@ -1,12 +1,12 @@
 import React from 'react';
 
 import ToLineItemTransformation from '../ToLineItemTransformation.jsx';
-import LineItem from '../../LineItem.jsx';
-import TextItemLineGrouper from '../../TextItemLineGrouper.jsx';
-import LineConverter from '../../LineConverter.jsx';
-import BlockType from '../../markdown/BlockType.jsx';
-import ParseResult from '../../ParseResult.jsx';
-import { REMOVED_ANNOTATION, ADDED_ANNOTATION } from '../../Annotation.jsx';
+import LineItem from '../../LineItem';
+import TextItemLineGrouper from '../../TextItemLineGrouper';
+import LineConverter from '../../LineConverter';
+import BlockType from '../../markdown/BlockType';
+import ParseResult from '../../ParseResult';
+import { REMOVED_ANNOTATION, ADDED_ANNOTATION } from '../../Annotation';
 
 
 // gathers text items on the same y line to one line item

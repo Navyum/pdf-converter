@@ -67,6 +67,16 @@ class WordDetectionStream extends StashingStream<TextItem, Word> {
   }
 
   protected convertItem(item: TextItem): Word {
+    // 检查 item.text 是否存在
+    if (!item.text || item.text.trim() === '') {
+      // 如果text为空，尝试从其他属性获取内容
+      // 或者直接跳过这个项目
+      return new Word({
+        string: '',
+        format: undefined
+      });
+    }
+    
     const format = this.fontToFormats.get(item.font || '');
     const isNumber = /^\d+$/.test(item.text.trim());
     
@@ -81,6 +91,10 @@ class WordDetectionStream extends StashingStream<TextItem, Word> {
   }
 
   protected shouldStash(item: TextItem): boolean {
+    // 检查 item.text 是否存在，避免处理图片项时出错
+    if (!item.text || item.text.trim() === '') {
+      return false;
+    }
     const isNumber = /^\d+$/.test(item.text.trim());
     return isNumber;
   }
@@ -91,6 +105,11 @@ class WordDetectionStream extends StashingStream<TextItem, Word> {
   }
 
   protected doMatchesStash(lastItem: TextItem, item: TextItem): boolean {
+    // 检查 item.text 是否存在，避免处理图片项时出错
+    if (!item.text || !lastItem.text || item.text.trim() === '' || lastItem.text.trim() === '') {
+      return false;
+    }
+    
     const lastItemFormat = this.fontToFormats.get(lastItem.font || '');
     const itemFormat = this.fontToFormats.get(item.font || '');
     
@@ -170,6 +189,13 @@ function combineText(textItems: TextItem[]): string {
   let lastItem: TextItem | null = null;
   
   textItems.forEach(textItem => {
+    
+    // 对于文本项，检查 text 属性
+    if (!textItem.text || textItem.text.trim() === '') {
+      // 空的文本项，跳过
+      return;
+    }
+    
     let textToAdd = textItem.text;
     
     if (!text.endsWith(' ') && !textToAdd.startsWith(' ')) {

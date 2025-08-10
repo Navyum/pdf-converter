@@ -5,6 +5,7 @@ import VerticalToHorizontal from './transformations/lineitem/VerticalToHorizonta
 import DetectTOC from './transformations/lineitem/DetectTOC.jsx';
 import DetectListItems from './transformations/lineitem/DetectListItems.jsx';
 import DetectHeaders from './transformations/lineitem/DetectHeaders.jsx';
+
 import GatherBlocks from './transformations/textitemblock/GatherBlocks.jsx';
 import DetectCodeQuoteBlocks from './transformations/textitemblock/DetectCodeQuoteBlocks.jsx';
 import DetectListLevels from './transformations/textitemblock/DetectListLevels.jsx';
