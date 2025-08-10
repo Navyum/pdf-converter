@@ -12,6 +12,7 @@ declare module 'react-bootstrap' {
   export interface ButtonGroupProps {
     bsSize?: string;
     children?: React.ReactNode;
+    className?: string;
   }
 
   export interface ButtonToolbarProps {
@@ -129,8 +130,8 @@ declare module 'react-bootstrap' {
   export const MenuItem: React.ComponentType<MenuItemProps>;
   export const Dropdown: React.ComponentType<DropdownProps> & {
     Menu: React.ComponentType<{ children?: React.ReactNode }>;
-    Toggle: React.ComponentType<{ children?: React.ReactNode; id?: string; variant?: string }>;
-    Item: React.ComponentType<{ eventKey?: any; onSelect?: () => void; onClick?: () => void; children?: React.ReactNode }>;
+    Toggle: React.ComponentType<{ children?: React.ReactNode; id?: string; variant?: string; className?: string }>;
+    Item: React.ComponentType<{ eventKey?: any; onSelect?: () => void; onClick?: () => void; children?: React.ReactNode; className?: string }>;
   };
   export const Popover: React.ComponentType<PopoverProps>;
   export const OverlayTrigger: React.ComponentType<OverlayTriggerProps>;

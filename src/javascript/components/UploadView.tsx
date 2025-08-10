@@ -1,85 +1,44 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import Dropzone from 'react-dropzone';
 
-// 定义组件的 Props 类型
 interface UploadViewProps {
-  uploadPdfFunction: (fileBuffer: Uint8Array) => void;
+  onDrop: (acceptedFiles: File[]) => void;
+  error?: string;
 }
 
-const UploadView: React.FC<UploadViewProps> = ({ uploadPdfFunction }) => {
-  const [error, setError] = useState<string | null>(null);
-
-  const onDrop = useCallback((files: File[]) => {
-    setError(null);
-    if (!files || files.length === 0) {
-      setError('No file dropped.');
-      return;
-    }
-    if (files.length > 1) {
-      setError(`Maximum one file allowed to upload, but not ${files.length}!`);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      const fileBuffer = evt.target?.result;
-      if (fileBuffer instanceof ArrayBuffer) {
-        uploadPdfFunction(new Uint8Array(fileBuffer));
-      }
-    };
-    reader.readAsArrayBuffer(files[0]);
-  }, [uploadPdfFunction]);
-
+const UploadView: React.FC<UploadViewProps> = ({ onDrop, error }) => {
   return (
-    <div>
-      <Dropzone
-        onDrop={onDrop}
-        accept={{ 'application/pdf': ['.pdf'] }}
-        maxFiles={1}
-        multiple={false}
-      >
-        {(({ getRootProps, getInputProps, isDragActive }: any) => (
-          <div
-            {...getRootProps()}
-            style={{
-              width: 400,
-              height: 500,
-              borderWidth: 2,
-              borderColor: isDragActive ? '#4CAF50' : '#666',
-              borderStyle: 'dashed',
-              borderRadius: 5,
-              display: 'table-cell',
-              textAlign: 'center',
-              verticalAlign: 'middle',
-              backgroundColor: isDragActive ? '#f0f8f0' : 'transparent'
-            }}
-          >
-            <input {...getInputProps()} />
-            <div className="container">
-              <h2>Drop your PDF file here!</h2>
+    <div className="upload-wrap">
+      <div className="upload-shell">
+        <Dropzone
+          onDrop={onDrop}
+          accept={{ 'application/pdf': ['.pdf'] }}
+          maxFiles={1}
+          multiple={false}
+        >
+          {({ getRootProps, getInputProps, isDragActive }) => (
+            <div
+              {...getRootProps()}
+              className={`upload-card ${isDragActive ? 'drag' : ''}`}
+            >
+              <input {...getInputProps()} />
+              <div className="upload-icon">
+                <i className="fas fa-cloud-upload-alt" aria-hidden="true"></i>
+              </div>
+              <h3 id="upload-title">拖拽PDF文件到此处或点击选择</h3>
+              <span style={{position:'absolute',width:0,height:0,overflow:'hidden',clip:'rect(0 0 0 0)'}}>Drop your PDF file here!</span>
+              <p>支持单个文件上传</p>
+              <div className="upload-actions">
+                <button className="btn-upload">
+                  <i className="fas fa-folder-open"></i>
+                  <span>选择文件</span>
+                </button>
+              </div>
+              {error && <div style={{ color: 'var(--error-color)', marginTop: 12 }}>{error}</div>}
             </div>
-            <h1>📁</h1>
-            <br/>
-            <div style={{ 
-              backgroundColor: '#fcf8e3', 
-              border: '1px solid #faebcc', 
-              color: '#8a6d3b',
-              padding: '15px',
-              borderRadius: '4px',
-              margin: '10px'
-            }}>
-              <i>
-                This tool converts a PDF file into a Markdown text format! Simply drag &amp; drop your PDF file on the upload area and go from there.
-                Don&apos;t expect wonders, there are a lot of variances in generated PDF&apos;s from different tools and different ages.
-                No matter how good the parser works for your PDF, you will have to invest a good amount of manual work to complete it.
-                Though this tool aims to be general purpose, it has been tested on a certain set of PDF&apos;s only.
-              </i>
-            </div>
-          </div>
-        )) as unknown as React.ReactNode}
-      </Dropzone>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      <br/><br/><br/><br/><br/><br/>
+          )}
+        </Dropzone>
+      </div>
     </div>
   );
 };

@@ -3,21 +3,21 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import UploadView from '../UploadView';
 
 describe('UploadView Component', () => {
-  const mockUploadPdfFunction = jest.fn();
+  const mockOnDrop = jest.fn();
 
-  beforeEach(() => mockUploadPdfFunction.mockClear());
+  beforeEach(() => mockOnDrop.mockClear());
 
   it('renders without crashing', () => {
     const { getByText } = render(
-      <UploadView uploadPdfFunction={mockUploadPdfFunction} />
+      <UploadView onDrop={mockOnDrop} />
     );
     
     expect(getByText('Drop your PDF file here!')).toBeInTheDocument();
   });
 
-  it('calls uploadPdfFunction when one file is selected', async () => {
+  it('calls onDrop when one file is selected', async () => {
     const { container } = render(
-      <UploadView uploadPdfFunction={mockUploadPdfFunction} />
+      <UploadView onDrop={mockOnDrop} />
     );
 
     const file = new File(['dummy content'], 'file.pdf', { type: 'application/pdf' });
@@ -26,6 +26,6 @@ describe('UploadView Component', () => {
 
     fireEvent.change(input!, { target: { files: [file] } } as any);
 
-    await waitFor(() => expect(mockUploadPdfFunction).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(mockOnDrop).toHaveBeenCalledTimes(1));
   });
 }); 

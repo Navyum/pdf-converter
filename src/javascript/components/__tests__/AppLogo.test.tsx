@@ -6,14 +6,14 @@ describe('AppLogo Component', () => {
   it('renders without crashing', () => {
     const { getByText } = render(<AppLogo />);
     
-    expect(getByText(/PDF To Markdown Converter/)).toBeInTheDocument();
+    expect(getByText(/PDF To Markdown/)).toBeInTheDocument();
   });
 
   it('calls onClick handler when clicked', () => {
     const mockOnClick = jest.fn();
     const { getByText } = render(<AppLogo onClick={mockOnClick} />);
     
-    const logoLink = getByText(/PDF To Markdown Converter/);
+    const logoLink = getByText(/PDF To Markdown/);
     fireEvent.click(logoLink);
 
     expect(mockOnClick).toHaveBeenCalledTimes(1);

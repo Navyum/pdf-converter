@@ -23,7 +23,7 @@ export default class AppLogo extends React.Component {
     render() {
         return (
             <a href="" onClick={ this.handleClick }>
-              <FaFilePdfO/> PDF To Markdown Converter</a>
+              <FaFilePdfO/> PDF To Markdown</a>
             );
     }
 }

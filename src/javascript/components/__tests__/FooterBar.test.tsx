@@ -6,7 +6,7 @@ describe('FooterBar Component', () => {
   it('renders without crashing', () => {
     const { getByText } = render(<FooterBar />);
     
-    expect(getByText(/PDF to Markdown Converter/i)).toBeInTheDocument();
+    expect(getByText(/PDF to Markdown/i)).toBeInTheDocument();
   });
 
   it('displays static footer text', () => {

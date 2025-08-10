@@ -8,53 +8,42 @@ interface TopBarProps {
   mainView: View;
   switchMainViewFunction: (view: View) => void;
   title: string;
+  onHelp?: () => void;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ mainView, switchMainViewFunction, title }) => {
+const TopBar: React.FC<TopBarProps> = ({ mainView, switchMainViewFunction, title, onHelp }) => {
   const showTabs = mainView === View.RESULT || mainView === View.DEBUG;
 
   return (
-    <div style={{ 
-      backgroundColor: '#333', 
-      color: 'white', 
-      padding: '10px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    }}>
-      <div>
-        <AppLogo bsRole="toggle" />
-      </div>
-      {showTabs && (
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button 
-            onClick={() => switchMainViewFunction(View.DEBUG)}
-            style={{ 
-              padding: '5px 10px', 
-              backgroundColor: mainView === View.DEBUG ? '#007bff' : 'transparent',
-              border: '1px solid #007bff',
-              color: 'white',
-              cursor: 'pointer'
-            }}
-          >
-            Debug View
-          </button>
-          <button 
-            onClick={() => switchMainViewFunction(View.RESULT)}
-            style={{ 
-              padding: '5px 10px', 
-              backgroundColor: mainView === View.RESULT ? '#007bff' : 'transparent',
-              border: '1px solid #007bff',
-              color: 'white',
-              cursor: 'pointer'
-            }}
-          >
-            Result View
-          </button>
+    <div className="topbar">
+      <div className="topbar-content">
+        <div>
+          <AppLogo bsRole="toggle" />
         </div>
-      )}
-      <div>
-        {title}
+        {showTabs && (
+          <div className="topbar-tabs">
+            <button 
+              onClick={() => switchMainViewFunction(View.DEBUG)}
+              className={`btn-tab ${mainView === View.DEBUG ? 'active' : ''}`}
+            >
+              Debug View
+            </button>
+            <button 
+              onClick={() => switchMainViewFunction(View.RESULT)}
+              className={`btn-tab ${mainView === View.RESULT ? 'active' : ''}`}
+            >
+              Result View
+            </button>
+          </div>
+        )}
+        <div className="topbar-actions">
+          {onHelp && (
+            <button className="btn-help" onClick={onHelp} title="帮助">
+              <i className="fas fa-question"></i>
+              <span>帮助</span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

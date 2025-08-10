@@ -23,7 +23,8 @@ module.exports = {
     },
     output: {
         path: BUILD_DIR,
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     module: {
         rules: [
@@ -79,6 +80,22 @@ module.exports = {
             ]
         })
     ],
+    devServer: {
+        static: {
+            directory: BUILD_DIR,
+        },
+        hot: true,
+        port: 8080,
+        open: true,
+        historyApiFallback: true,
+        compress: true,
+        client: {
+            overlay: {
+                errors: true,
+                warnings: false,
+            },
+        },
+    },
     stats: {
         errorDetails: true
     }

@@ -7,6 +7,11 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended'
   ],
+  env: {
+    node: true,
+    browser: true,
+    es6: true
+  },
   settings: {
     react: {
       version: 'detect'
@@ -29,6 +34,16 @@ module.exports = {
       files: ['*.test.tsx', '*.test.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off'
+      }
+    },
+    {
+      files: ['webpack.config.js', '*.config.js'],
+      env: {
+        node: true
+      },
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+        'no-undef': 'off'
       }
     }
   ]

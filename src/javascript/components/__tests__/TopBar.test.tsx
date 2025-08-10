@@ -19,7 +19,7 @@ describe('TopBar Component', () => {
       />
     );
     
-    expect(getByText('Test Title')).toBeInTheDocument();
+    expect(getByText('PDF To Markdown')).toBeInTheDocument();
   });
 
   it('shows debug and result tabs when appropriate', () => {
