@@ -76,6 +76,10 @@ module.exports = {
                 {
                     from: 'favicons',
                     to: 'favicons'
+                },
+                {
+                    from: path.resolve(__dirname, 'CNAME'),
+                    to: 'CNAME'
                 }
             ]
         })
