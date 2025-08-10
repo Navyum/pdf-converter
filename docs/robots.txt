@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://pdf-converter.camscanner.top/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 1 
